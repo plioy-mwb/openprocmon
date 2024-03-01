@@ -13,12 +13,16 @@ public:
 	{
 
 		ULONGLONG Time = pEventView->GetStartTime().QuadPart;
-
-		LogMessage(L_INFO, TEXT("%llu Process %s Do 0x%x for %s"),
+		CString name = pEventView->GetProcessName();
+		PLOG_ENTRY plog = pEventView->GetPreEventEntry();
+		CString disp = StrMapOperation(plog);
+		if (!name.Compare(L"node.exe"))
+		LogMessage(L_INFO, TEXT("%llu | %s |%-36s| %s "),
 			Time,
-			pEventView->GetProcessName().GetBuffer(),
-			pEventView->GetEventOperator(),
-			pEventView->GetPath().GetBuffer());
+			name.GetBuffer(),
+			disp, //pEventView->GetEventOperator(),
+			pEventView->GetPath().GetBuffer()
+		);
 		//m_viewList.push_back(pEventView);
 		return TRUE;
 	}
@@ -28,9 +32,9 @@ public:
 int main()
 {
 
-	CEventMgr& Optmgr = Singleton<CEventMgr>::getInstance();
-	CMonitorContoller& Monitormgr = Singleton<CMonitorContoller>::getInstance();
-	CDrvLoader& Drvload = Singleton<CDrvLoader>::getInstance();
+	CEventMgr&			Optmgr				= Singleton<CEventMgr>::getInstance();
+	CMonitorContoller&	Monitormgr			= Singleton<CMonitorContoller>::getInstance();
+	CDrvLoader&			Drvload				= Singleton<CDrvLoader>::getInstance();
 	
 	if(!Drvload.Init(TEXT("PROCMON24"), TEXT("procmon.sys"))){
 		return -1;
@@ -73,5 +77,6 @@ int main()
 
 	Monitormgr.Stop();
 	Monitormgr.Destory();
+
 	return 0;
 }
