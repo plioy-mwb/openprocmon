@@ -31,8 +31,8 @@
 *.out
 *.app
 /.vs
-/sdk/procmonsdk/x64
+/x64
 /gui/x64
 /kernel/x64
-/sdk/example
-/x64/Debug
+/sdk/example/x64
+/sdk/procmonsdk/x64
