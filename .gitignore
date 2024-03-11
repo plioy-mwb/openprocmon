@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+/.vs
+/sdk/procmonsdk/x64
+/gui/x64
+/kernel/x64
+/sdk/example
+/x64/Debug

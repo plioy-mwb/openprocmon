@@ -93,6 +93,7 @@ CMonitorContoller::SetMonitor(
 	if (bEnableReg) {
 		m_dwControl |= CTL_MONITOR_REG_ON;
 	}
+
 }
 
 BOOL CMonitorContoller::DisableAll()
