@@ -1,6 +1,13 @@
 #include <conio.h>
 #include <atltime.h>
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
+
 #include "../../sdk/procmonsdk/sdk.hpp"
+
+ 
 
 class CMyEvent : public IEventCallback
 {
@@ -8,13 +15,18 @@ public:
 	virtual BOOL DoEvent(const CRefPtr<CEventView> pEventView)
 	{
 
-		ULONGLONG Time = pEventView->GetStartTime().QuadPart;
-		CString name = pEventView->GetProcessName();
+		time_t when		= pEventView->GetStartTime().QuadPart;
+		CString name	= pEventView->GetProcessName();
 		PLOG_ENTRY plog = pEventView->GetPreEventEntry();
-		CString disp = StrMapOperation(plog);
+		CString disp	= StrMapOperation(plog);
+	
+		time_t t		= time(&when);
+		tm* tmm			= localtime(&t);
+		std::wstringstream wss;
+		wss << std::put_time(tmm, L"%F %T");
 
 		if (!name.Compare(L"node.exe"))
-		LogMessage(L_INFO, TEXT("%llu | %s |%-36s| %s "), Time, name.GetBuffer(), disp, pEventView->GetPath().GetBuffer());
+			LogMessage(L_INFO, TEXT("%s | %s |%-36s| %s "), wss.str().c_str(), name.GetBuffer(), disp, pEventView->GetPath().GetBuffer());
 
 		//m_viewList.push_back(pEventView);
 		return TRUE;
